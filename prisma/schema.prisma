@@ -15,14 +15,21 @@ enum Status {
   REMOVED
 }
 
+enum TradeType {
+  BUY
+  SELL
+}
+
 enum UserRole {
   ADMIN
   COMMON
 }
 
-model Holdings {
+model Holding {
   id                  Int                       @id @default(autoincrement())
+  portfolio           Portfolio                 @relation(fields: [portfolio_id], references: [id])
   portfolio_id        Int
+  symbol              Symbol                    @relation(fields: [symbol_id], references: [id])
   symbol_id           Int
   lots                Int
   shares              Int
@@ -32,22 +39,12 @@ model Holdings {
 model Portfolio {
   id                  Int                       @id @default(autoincrement())
   name                String                    @db.VarChar(200)
+  currency            String                    @db.VarChar(50)
   status              Status                    @default(ACTIVE)
   user                User                      @relation(fields: [user_id], references: [id])
   user_id             Int
-  created_at          DateTime                  @default(now())
-  updated_at          DateTime                  @updatedAt
-  removed_at          DateTime?
-}
-
-model User {
-  id                  Int                       @id @default(autoincrement())
-  email               String                    @db.VarChar(200) @unique
-  name                String                    @db.VarChar(200)
-  password            String                    @db.VarChar(60)
-  status              Status                    @default(ACTIVE)
-  role                UserRole                  @default(COMMON)
-  portfolios          Portfolio[]
+  holdings            Holding[]
+  trades              Trade[]
   created_at          DateTime                  @default(now())
   updated_at          DateTime                  @updatedAt
   removed_at          DateTime?
@@ -61,6 +58,8 @@ model Symbol {
   historical_prices   SymbolHistoricalPrice[]
   category            SymbolCategory            @relation(fields: [category_id], references: [id])
   category_id         Int
+  holdings            Holding[]
+  trades              Trade[]
   created_at          DateTime                  @default(now())
   updated_at          DateTime                  @updatedAt
   removed_at          DateTime?
@@ -88,4 +87,33 @@ model SymbolHistoricalPrice {
   volume              BigInt
 
   @@unique([symbol_id,date])
+}
+
+model Trade {
+  id                  Int                       @id @default(autoincrement())
+  date                DateTime                  @db.Date
+  user                User                      @relation(fields: [user_id], references: [id])
+  user_id             Int
+  portfolio           Portfolio                 @relation(fields: [portfolio_id], references: [id])
+  portfolio_id        Int
+  symbol              Symbol                    @relation(fields: [symbol_id], references: [id])
+  symbol_id           Int
+  shares              Decimal
+  cost_per_share      Decimal
+  type                TradeType
+  created_at          DateTime                  @default(now())
+}
+
+model User {
+  id                  Int                       @id @default(autoincrement())
+  email               String                    @db.VarChar(200) @unique
+  name                String                    @db.VarChar(200)
+  password            String                    @db.VarChar(60)
+  status              Status                    @default(ACTIVE)
+  role                UserRole                  @default(COMMON)
+  portfolios          Portfolio[]
+  trades              Trade[]
+  created_at          DateTime                  @default(now())
+  updated_at          DateTime                  @updatedAt
+  removed_at          DateTime?
 }
