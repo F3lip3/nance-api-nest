@@ -1,6 +1,7 @@
 import {
   ClassSerializerInterceptor,
   Controller,
+  HttpCode,
   Post,
   Request,
   UseGuards,
@@ -16,6 +17,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
+  @HttpCode(200)
   async login(@Request() req) {
     return this.authService.login(req.user);
   }
