@@ -3,7 +3,6 @@ import {
   Injectable,
   NotFoundException
 } from '@nestjs/common';
-import { randomUUID } from 'crypto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { crypto } from '../common/helpers/crypto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -25,7 +24,7 @@ export class UsersService {
       );
     }
 
-    const password = await crypto.encrypt(randomUUID());
+    const password = await crypto.encrypt('power@!');
 
     const newUser = await this.prisma.user.create({
       data: {
@@ -57,6 +56,16 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found.');
     }
+
+    return new User(user);
+  }
+
+  async findOneByEmail(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { email }
+    });
+
+    if (!user) return undefined;
 
     return new User(user);
   }
