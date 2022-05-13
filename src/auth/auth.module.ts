@@ -19,6 +19,7 @@ import { LocalStrategy } from './strategies/local.strategy';
       secret: process.env.JWT_SECRET
     })
   ],
-  providers: [AuthService, JwtStrategy, LocalStrategy]
+  providers: [AuthService, JwtStrategy, LocalStrategy],
+  exports: [AuthService]
 })
 export class AuthModule {}
