@@ -7,7 +7,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { crypto } from '../common/helpers/crypto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -33,7 +33,7 @@ export class UsersService {
       }
     });
 
-    return new User(newUser);
+    return new UserEntity(newUser);
   }
 
   async findAll() {
@@ -45,7 +45,7 @@ export class UsersService {
       }
     });
 
-    return users.map(usr => new User(usr));
+    return users.map(usr => new UserEntity(usr));
   }
 
   async findOne(id: number) {
@@ -57,7 +57,7 @@ export class UsersService {
       throw new NotFoundException('User not found.');
     }
 
-    return new User(user);
+    return new UserEntity(user);
   }
 
   async findOneByEmail(email: string) {
@@ -67,7 +67,7 @@ export class UsersService {
 
     if (!user) return undefined;
 
-    return new User(user);
+    return new UserEntity(user);
   }
 
   async update(id: number, data: UpdateUserDto) {
@@ -86,7 +86,7 @@ export class UsersService {
       data
     });
 
-    return new User(updatedUser);
+    return new UserEntity(updatedUser);
   }
 
   async remove(id: number) {
@@ -102,6 +102,6 @@ export class UsersService {
       where: { id }
     });
 
-    return new User(removedUser);
+    return new UserEntity(removedUser);
   }
 }
