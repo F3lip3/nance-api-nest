@@ -55,7 +55,6 @@ model Portfolio {
   trades              Trade[]
   created_at          DateTime                  @default(now())
   updated_at          DateTime                  @updatedAt
-  removed_at          DateTime?
 
   @@unique([name, user_id])
 }
@@ -72,7 +71,6 @@ model Symbol {
   trades              Trade[]
   created_at          DateTime                  @default(now())
   updated_at          DateTime                  @updatedAt
-  removed_at          DateTime?
 }
 
 model SymbolCategory {
@@ -82,7 +80,6 @@ model SymbolCategory {
   symbols             Symbol[]
   created_at          DateTime                  @default(now())
   updated_at          DateTime                  @updatedAt
-  removed_at          DateTime?
 }
 
 model SymbolHistoricalPrice {
@@ -125,5 +122,4 @@ model User {
   trades              Trade[]
   created_at          DateTime                  @default(now())
   updated_at          DateTime                  @updatedAt
-  removed_at          DateTime?
 }

@@ -1,14 +1,20 @@
 import { Portfolio, Status } from '@prisma/client';
 import { Exclude } from 'class-transformer';
+import { CurrencyEntity } from '../../currencies/entities/currency.entity';
 
 export class PortfolioEntity implements Portfolio {
   id: number;
   name: string;
-  currency_id: number;
   status: Status;
-  user_id: number;
   created_at: Date;
   updated_at: Date;
+  currency: CurrencyEntity;
+
+  @Exclude()
+  currency_id: number;
+
+  @Exclude()
+  user_id: number;
 
   @Exclude()
   removed_at: Date;
