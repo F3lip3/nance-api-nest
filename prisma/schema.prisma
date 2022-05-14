@@ -25,6 +25,13 @@ enum UserRole {
   COMMON
 }
 
+model Currency {
+  id                  Int                       @id @default(autoincrement())
+  code                String                    @db.VarChar() @unique
+  name                String                    @db.VarChar(200)
+  portfolio           Portfolio[]
+}
+
 model Holding {
   id                  Int                       @id @default(autoincrement())
   portfolio           Portfolio                 @relation(fields: [portfolio_id], references: [id])
@@ -39,7 +46,8 @@ model Holding {
 model Portfolio {
   id                  Int                       @id @default(autoincrement())
   name                String                    @db.VarChar(200)
-  currency            String                    @db.VarChar(50)
+  currency            Currency                  @relation(fields: [currency_id], references: [id])
+  currency_id         Int
   status              Status                    @default(ACTIVE)
   user                User                      @relation(fields: [user_id], references: [id])
   user_id             Int
@@ -48,6 +56,8 @@ model Portfolio {
   created_at          DateTime                  @default(now())
   updated_at          DateTime                  @updatedAt
   removed_at          DateTime?
+
+  @@unique([name, user_id])
 }
 
 model Symbol {
@@ -86,7 +96,7 @@ model SymbolHistoricalPrice {
   adjusted_close      Decimal
   volume              BigInt
 
-  @@unique([symbol_id,date])
+  @@unique([symbol_id, date])
 }
 
 model Trade {
