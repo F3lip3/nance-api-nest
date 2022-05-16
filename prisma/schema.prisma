@@ -62,22 +62,16 @@ model Portfolio {
 model Symbol {
   id                  Int                       @id @default(autoincrement())
   code                String                    @db.VarChar(100) @unique
-  name                String                    @db.VarChar(500)
+  exchange            String                    @db.VarChar(10)
+  shortname           String                    @db.VarChar(500)
+  type                String                    @db.VarChar(100)
+  sector              String                    @db.VarChar(500)
+  industry            String                    @db.VarChar(1000)
+  longname            String
   status              Status                    @default(ACTIVE)
   historical_prices   SymbolHistoricalPrice[]
-  category            SymbolCategory            @relation(fields: [category_id], references: [id])
-  category_id         Int
   holdings            Holding[]
   trades              Trade[]
-  created_at          DateTime                  @default(now())
-  updated_at          DateTime                  @updatedAt
-}
-
-model SymbolCategory {
-  id                  Int                       @id @default(autoincrement())
-  name                String                    @db.VarChar(200) @unique
-  status              Status                    @default(ACTIVE)
-  symbols             Symbol[]
   created_at          DateTime                  @default(now())
   updated_at          DateTime                  @updatedAt
 }
