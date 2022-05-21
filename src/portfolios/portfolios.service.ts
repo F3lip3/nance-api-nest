@@ -74,13 +74,13 @@ export class PortfoliosService {
     );
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, user_id: number) {
     const portfolio = await this.prisma.portfolio.findUnique({
       where: { id },
       include: { currency: true }
     });
 
-    if (!portfolio) throw new NotFoundException();
+    if (portfolio?.user_id !== user_id) throw new NotFoundException();
 
     return new PortfolioEntity({
       ...portfolio,

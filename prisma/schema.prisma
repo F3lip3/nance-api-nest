@@ -38,9 +38,11 @@ model Holding {
   portfolio_id        Int
   symbol              Symbol                    @relation(fields: [symbol_id], references: [id])
   symbol_id           Int
-  lots                Int
+  trades              Int
   shares              Int
   average_cost        Decimal
+
+  @@unique([portfolio_id, symbol_id])
 }
 
 model Portfolio {
