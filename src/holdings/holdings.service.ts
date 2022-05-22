@@ -20,12 +20,12 @@ export class HoldingsService {
             id: data.symbol_id
           }
         },
-        trades: data.trades,
+        transactions: data.transactions,
         shares: data.shares,
         average_cost: data.average_cost
       },
       update: {
-        trades: data.trades,
+        transactions: data.transactions,
         shares: data.shares,
         average_cost: data.average_cost
       },

@@ -15,7 +15,7 @@ enum Status {
   REMOVED
 }
 
-enum TradeType {
+enum TransactionType {
   BUY
   SELL
 }
@@ -38,8 +38,8 @@ model Holding {
   portfolio_id        Int
   symbol              Symbol                    @relation(fields: [symbol_id], references: [id])
   symbol_id           Int
-  trades              Int
-  shares              Int
+  transactions        Int
+  shares              Decimal
   average_cost        Decimal
 
   @@unique([portfolio_id, symbol_id])
@@ -54,7 +54,7 @@ model Portfolio {
   user                User                      @relation(fields: [user_id], references: [id])
   user_id             Int
   holdings            Holding[]
-  trades              Trade[]
+  transactions        Transaction[]
   created_at          DateTime                  @default(now())
   updated_at          DateTime                  @updatedAt
 
@@ -73,7 +73,7 @@ model Symbol {
   status              Status                    @default(ACTIVE)
   historical_prices   SymbolHistoricalPrice[]
   holdings            Holding[]
-  trades              Trade[]
+  transactions        Transaction[]
   created_at          DateTime                  @default(now())
   updated_at          DateTime                  @updatedAt
 }
@@ -92,7 +92,7 @@ model SymbolHistoricalPrice {
   @@unique([symbol_id, date])
 }
 
-model Trade {
+model Transaction {
   id                  Int                       @id @default(autoincrement())
   date                DateTime                  @db.Date
   user                User                      @relation(fields: [user_id], references: [id])
@@ -103,7 +103,7 @@ model Trade {
   symbol_id           Int
   shares              Decimal
   cost_per_share      Decimal
-  type                TradeType
+  type                TransactionType
   created_at          DateTime                  @default(now())
 }
 
@@ -115,7 +115,7 @@ model User {
   status              Status                    @default(ACTIVE)
   role                UserRole                  @default(COMMON)
   portfolios          Portfolio[]
-  trades              Trade[]
+  transactions        Transaction[]
   created_at          DateTime                  @default(now())
   updated_at          DateTime                  @updatedAt
 }
