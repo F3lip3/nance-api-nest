@@ -9,8 +9,8 @@ export class TransactionsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(
-    user_id: number,
-    portfolio_id: number,
+    user_id: string,
+    portfolio_id: string,
     data: CreateTransactionDto
   ) {
     const newTransaction = await this.prisma.transaction.create({
@@ -40,7 +40,7 @@ export class TransactionsService {
     return new TransactionEntity(newTransaction);
   }
 
-  async findAll(user_id: number, portfolio_id: number, symbol_id: number) {
+  async findAll(user_id: string, portfolio_id: string, symbol_id: string) {
     const transactions = await this.prisma.transaction.findMany({
       where: {
         user_id,
@@ -52,7 +52,7 @@ export class TransactionsService {
     return transactions?.map(trans => new TransactionEntity(trans));
   }
 
-  async update(id: number, user_id: number, data: UpdateTransactionDto) {
+  async update(id: string, user_id: string, data: UpdateTransactionDto) {
     const transaction = await this.prisma.transaction.findUnique({
       where: { id }
     });
@@ -73,7 +73,7 @@ export class TransactionsService {
     return new TransactionEntity(updatedTransaction);
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} transaction`;
   }
 }

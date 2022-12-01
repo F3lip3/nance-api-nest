@@ -40,7 +40,7 @@ export class HoldingsService {
     return new HoldingEntity(holding);
   }
 
-  async findAll(portfolio_id: number, user_id: number) {
+  async findAll(portfolio_id: string, user_id: string) {
     const holdings = await this.prisma.holding.findMany({
       where: {
         portfolio: {
@@ -53,7 +53,7 @@ export class HoldingsService {
     return holdings?.map(holding => new HoldingEntity(holding));
   }
 
-  async findOne(id: number, portfolio_id: number, user_id: number) {
+  async findOne(id: string, portfolio_id: string, user_id: string) {
     const holding = await this.prisma.holding.findUnique({
       where: { id },
       include: { portfolio: true }
@@ -69,7 +69,7 @@ export class HoldingsService {
     return holding;
   }
 
-  async remove(id: number, portfolio_id: number, user_id: number) {
+  async remove(id: string, portfolio_id: string, user_id: string) {
     const holding = await this.prisma.holding.findUnique({
       where: { id },
       include: { portfolio: true }

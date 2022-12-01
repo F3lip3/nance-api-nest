@@ -48,7 +48,7 @@ export class UsersService {
     return users.map(usr => new UserEntity(usr));
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const user = await this.prisma.user.findUnique({
       where: { id }
     });
@@ -70,7 +70,7 @@ export class UsersService {
     return new UserEntity(user);
   }
 
-  async update(id: number, data: UpdateUserDto) {
+  async update(id: string, data: UpdateUserDto) {
     const user = await this.prisma.user.findUnique({
       where: { id }
     });
@@ -89,7 +89,7 @@ export class UsersService {
     return new UserEntity(updatedUser);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const user = await this.prisma.user.findUnique({
       where: { id }
     });

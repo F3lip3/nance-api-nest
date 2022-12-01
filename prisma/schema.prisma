@@ -26,96 +26,107 @@ enum UserRole {
 }
 
 model Currency {
-  id                  Int                       @id @default(autoincrement())
-  code                String                    @db.VarChar() @unique
-  name                String                    @db.VarChar(200)
-  portfolio           Portfolio[]
+  id        String      @id @default(cuid())
+  code      String      @unique @db.VarChar()
+  name      String      @db.VarChar(200)
+  portfolio Portfolio[]
+
+  @@map(name: "currencies")
 }
 
 model Holding {
-  id                  Int                       @id @default(autoincrement())
-  portfolio           Portfolio                 @relation(fields: [portfolio_id], references: [id])
-  portfolio_id        Int
-  symbol              Symbol                    @relation(fields: [symbol_id], references: [id])
-  symbol_id           Int
-  transactions        Int
-  shares              Decimal
-  average_cost        Decimal
+  id           String    @id @default(cuid())
+  portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
+  portfolio_id String
+  symbol       Symbol    @relation(fields: [symbol_id], references: [id])
+  symbol_id    String
+  transactions Int
+  shares       Decimal
+  average_cost Decimal
 
   @@unique([portfolio_id, symbol_id])
+  @@map(name: "holdings")
 }
 
 model Portfolio {
-  id                  Int                       @id @default(autoincrement())
-  name                String                    @db.VarChar(200)
-  currency            Currency                  @relation(fields: [currency_id], references: [id])
-  currency_id         Int
-  status              Status                    @default(ACTIVE)
-  user                User                      @relation(fields: [user_id], references: [id])
-  user_id             Int
-  holdings            Holding[]
-  transactions        Transaction[]
-  created_at          DateTime                  @default(now())
-  updated_at          DateTime                  @updatedAt
+  id           String        @id @default(cuid())
+  name         String        @db.VarChar(200)
+  currency     Currency      @relation(fields: [currency_id], references: [id])
+  currency_id  String
+  status       Status        @default(ACTIVE)
+  user         User          @relation(fields: [user_id], references: [id])
+  user_id      String
+  holdings     Holding[]
+  transactions Transaction[]
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
 
   @@unique([name, user_id])
+  @@map(name: "portfolios")
 }
 
 model Symbol {
-  id                  Int                       @id @default(autoincrement())
-  code                String                    @db.VarChar(100) @unique
-  exchange            String                    @db.VarChar(10)
-  shortname           String                    @db.VarChar(500)
-  type                String                    @db.VarChar(100)
-  sector              String                    @db.VarChar(500)
-  industry            String                    @db.VarChar(1000)
-  longname            String
-  status              Status                    @default(ACTIVE)
-  historical_prices   SymbolHistoricalPrice[]
-  holdings            Holding[]
-  transactions        Transaction[]
-  created_at          DateTime                  @default(now())
-  updated_at          DateTime                  @updatedAt
+  id                String                  @id @default(cuid())
+  code              String                  @unique @db.VarChar(100)
+  exchange          String                  @db.VarChar(10)
+  shortname         String                  @db.VarChar(500)
+  type              String                  @db.VarChar(100)
+  sector            String                  @db.VarChar(500)
+  industry          String                  @db.VarChar(1000)
+  longname          String
+  status            Status                  @default(ACTIVE)
+  historical_prices SymbolHistoricalPrice[]
+  holdings          Holding[]
+  transactions      Transaction[]
+  created_at        DateTime                @default(now())
+  updated_at        DateTime                @updatedAt
+
+  @@map(name: "symbols")
 }
 
 model SymbolHistoricalPrice {
-  id                  BigInt                    @id @default(autoincrement())
-  symbol              Symbol                    @relation(fields: [symbol_id], references: [id])
-  symbol_id           Int
-  date                DateTime                  @db.Date
-  open                Decimal
-  high                Decimal
-  close               Decimal
-  adjusted_close      Decimal
-  volume              BigInt
+  id             String   @id @default(cuid())
+  symbol         Symbol   @relation(fields: [symbol_id], references: [id])
+  symbol_id      String
+  date           DateTime @db.Date
+  open           Decimal
+  high           Decimal
+  close          Decimal
+  adjusted_close Decimal
+  volume         BigInt
 
   @@unique([symbol_id, date])
+  @@map(name: "symbol_historical_prices")
 }
 
 model Transaction {
-  id                  Int                       @id @default(autoincrement())
-  date                DateTime                  @db.Date
-  user                User                      @relation(fields: [user_id], references: [id])
-  user_id             Int
-  portfolio           Portfolio                 @relation(fields: [portfolio_id], references: [id])
-  portfolio_id        Int
-  symbol              Symbol                    @relation(fields: [symbol_id], references: [id])
-  symbol_id           Int
-  shares              Decimal
-  cost_per_share      Decimal
-  type                TransactionType
-  created_at          DateTime                  @default(now())
+  id             String          @id @default(cuid())
+  date           DateTime        @db.Date
+  user           User            @relation(fields: [user_id], references: [id])
+  user_id        String
+  portfolio      Portfolio       @relation(fields: [portfolio_id], references: [id])
+  portfolio_id   String
+  symbol         Symbol          @relation(fields: [symbol_id], references: [id])
+  symbol_id      String
+  shares         Decimal
+  cost_per_share Decimal
+  type           TransactionType
+  created_at     DateTime        @default(now())
+
+  @@map(name: "transactions")
 }
 
 model User {
-  id                  Int                       @id @default(autoincrement())
-  email               String                    @db.VarChar(200) @unique
-  name                String                    @db.VarChar(200)
-  password            String                    @db.VarChar(60)
-  status              Status                    @default(ACTIVE)
-  role                UserRole                  @default(COMMON)
-  portfolios          Portfolio[]
-  transactions        Transaction[]
-  created_at          DateTime                  @default(now())
-  updated_at          DateTime                  @updatedAt
+  id           String        @id @default(cuid())
+  email        String        @unique @db.VarChar(200)
+  name         String        @db.VarChar(200)
+  password     String        @db.VarChar(60)
+  status       Status        @default(ACTIVE)
+  role         UserRole      @default(COMMON)
+  portfolios   Portfolio[]
+  transactions Transaction[]
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+
+  @@map(name: "users")
 }

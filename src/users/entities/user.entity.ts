@@ -2,7 +2,7 @@ import { Status, User, UserRole } from '@prisma/client';
 import { Exclude } from 'class-transformer';
 
 export class UserEntity implements User {
-  id: number;
+  id: string;
   email: string;
   name: string;
   status: Status;

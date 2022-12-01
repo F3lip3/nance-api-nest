@@ -3,7 +3,7 @@ import { Exclude } from 'class-transformer';
 
 export class CurrencyEntity implements Currency {
   @Exclude()
-  id: number;
+  id: string;
 
   code: string;
   name: string;

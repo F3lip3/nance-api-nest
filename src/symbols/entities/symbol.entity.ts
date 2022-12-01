@@ -2,7 +2,7 @@ import { Status, Symbol } from '@prisma/client';
 import { Exclude } from 'class-transformer';
 
 export class SymbolEntity implements Symbol {
-  id: number;
+  id: string;
   code: string;
   exchange: string;
   shortname: string;

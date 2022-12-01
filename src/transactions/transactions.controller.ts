@@ -4,7 +4,6 @@ import {
   Controller,
   Get,
   Param,
-  ParseIntPipe,
   Post,
   Query,
   UseGuards,
@@ -30,12 +29,12 @@ export class TransactionsController {
 
   @Post()
   async create(
-    @User('id') user_id: number,
-    @Param('portfolio_id', ParseIntPipe) portfolio_id: number,
+    @User('id') user_id: string,
+    @Param('portfolio_id') portfolio_id: string,
     @Body() data: CreateTransactionDto
   ) {
     let symbol_id = data.symbol_id;
-    if (symbol_id === 0 && data.symbol) {
+    if (symbol_id === '' && data.symbol) {
       ({ id: symbol_id } = await this.symbolsService.create(data.symbol));
     }
 
@@ -91,9 +90,9 @@ export class TransactionsController {
 
   @Get()
   async findAll(
-    @User('id', ParseIntPipe) user_id: number,
-    @Param('portfolio_id', ParseIntPipe) portfolio_id: number,
-    @Query('symbol_id', ParseIntPipe) symbol_id: number
+    @User('id') user_id: string,
+    @Param('portfolio_id') portfolio_id: string,
+    @Query('symbol_id') symbol_id: string
   ) {
     return this.transactionsService.findAll(user_id, portfolio_id, symbol_id);
   }

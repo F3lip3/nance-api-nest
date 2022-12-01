@@ -4,15 +4,15 @@ import { Type } from 'class-transformer';
 import { IsDate } from 'class-validator';
 
 export class TransactionEntity implements Transaction {
-  id: number;
+  id: string;
 
   @Type(() => Date)
   @IsDate()
   date: Date;
 
-  user_id: number;
-  portfolio_id: number;
-  symbol_id: number;
+  user_id: string;
+  portfolio_id: string;
+  symbol_id: string;
 
   @Type(() => Number)
   shares: Decimal;

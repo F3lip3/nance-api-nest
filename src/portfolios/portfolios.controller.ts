@@ -5,7 +5,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   UseGuards,
@@ -24,34 +23,31 @@ export class PortfoliosController {
   constructor(private readonly portfoliosService: PortfoliosService) {}
 
   @Post()
-  create(@User('id') user_id: number, @Body() data: CreatePortfolioDto) {
+  create(@User('id') user_id: string, @Body() data: CreatePortfolioDto) {
     return this.portfoliosService.create(user_id, data);
   }
 
   @Get()
-  findAll(@User('id') user_id: number) {
+  findAll(@User('id') user_id: string) {
     return this.portfoliosService.findAll(user_id);
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number, @User('id') user_id: number) {
+  findOne(@Param('id') id: string, @User('id') user_id: string) {
     return this.portfoliosService.findOne(id, user_id);
   }
 
   @Patch(':id')
   update(
-    @Param('id', ParseIntPipe) id: number,
-    @User('id') user_id: number,
+    @Param('id') id: string,
+    @User('id') user_id: string,
     @Body() updatePortfolioDto: UpdatePortfolioDto
   ) {
     return this.portfoliosService.update(id, user_id, updatePortfolioDto);
   }
 
   @Delete(':id')
-  async remove(
-    @Param('id', ParseIntPipe) id: number,
-    @User('id') user_id: number
-  ) {
+  async remove(@Param('id') id: string, @User('id') user_id: string) {
     await this.portfoliosService.remove(id, user_id);
   }
 }

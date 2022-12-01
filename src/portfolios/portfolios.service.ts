@@ -13,7 +13,7 @@ import { PortfolioEntity } from './entities/portfolio.entity';
 export class PortfoliosService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(user_id: number, data: CreatePortfolioDto) {
+  async create(user_id: string, data: CreatePortfolioDto) {
     const currency = await this.prisma.currency.findUnique({
       where: {
         code: data.currency
@@ -59,7 +59,7 @@ export class PortfoliosService {
     });
   }
 
-  async findAll(user_id: number) {
+  async findAll(user_id: string) {
     const portfolios = await this.prisma.portfolio.findMany({
       where: { user_id },
       include: { currency: true }
@@ -74,7 +74,7 @@ export class PortfoliosService {
     );
   }
 
-  async findOne(id: number, user_id: number) {
+  async findOne(id: string, user_id: string) {
     const portfolio = await this.prisma.portfolio.findUnique({
       where: { id },
       include: { currency: true }
@@ -88,7 +88,7 @@ export class PortfoliosService {
     });
   }
 
-  async update(id: number, user_id: number, data: UpdatePortfolioDto) {
+  async update(id: string, user_id: string, data: UpdatePortfolioDto) {
     const portfolio = await this.prisma.portfolio.findUnique({
       where: { id },
       include: { currency: true }
@@ -145,7 +145,7 @@ export class PortfoliosService {
     });
   }
 
-  async remove(id: number, user_id: number) {
+  async remove(id: string, user_id: string) {
     const portfolio = await this.prisma.portfolio.findUnique({
       where: { id },
       include: { currency: true }

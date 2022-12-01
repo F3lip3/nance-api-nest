@@ -3,7 +3,7 @@ import { Exclude } from 'class-transformer';
 import { CurrencyEntity } from '../../currencies/entities/currency.entity';
 
 export class PortfolioEntity implements Portfolio {
-  id: number;
+  id: string;
   name: string;
   status: Status;
   created_at: Date;
@@ -11,10 +11,10 @@ export class PortfolioEntity implements Portfolio {
   currency: CurrencyEntity;
 
   @Exclude()
-  currency_id: number;
+  currency_id: string;
 
   @Exclude()
-  user_id: number;
+  user_id: string;
 
   @Exclude()
   removed_at: Date;

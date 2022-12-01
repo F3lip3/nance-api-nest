@@ -3,9 +3,9 @@ import { Decimal } from '@prisma/client/runtime';
 import { Type } from 'class-transformer';
 
 export class HoldingEntity implements Holding {
-  id: number;
-  portfolio_id: number;
-  symbol_id: number;
+  id: string;
+  portfolio_id: string;
+  symbol_id: string;
   transactions: number;
 
   @Type(() => Number)
